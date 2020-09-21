@@ -22,8 +22,7 @@ namespace XFPrismSample
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnInitialized)}");
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
-            
+            await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(PageA)}");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -32,7 +31,7 @@ namespace XFPrismSample
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<PageA, PageAViewModel>();
             containerRegistry.RegisterForNavigation<PageB, PageBViewModel>();
             containerRegistry.RegisterForNavigation<PageC, PageCViewModel>();
         }

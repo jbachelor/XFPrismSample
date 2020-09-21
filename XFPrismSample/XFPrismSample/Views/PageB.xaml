@@ -6,7 +6,9 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="CenterAndExpand"
                      VerticalOptions="CenterAndExpand">
-            <Button Text="Go to view C"
+            <Button Text="Go to View C, Remove View B"
+                    Command="{Binding GoToViewCAndRemoveSelfFromNavStackCommand}" />
+            <Button Text="View C, No Removal"
                     Command="{Binding GoToViewCCommand}" />
         </StackLayout>
     </ContentPage.Content>

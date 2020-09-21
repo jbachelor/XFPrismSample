@@ -6,14 +6,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using XFPrismSample.Views;
 
 namespace XFPrismSample.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class PageAViewModel : ViewModelBase
     {
         public DelegateCommand GoToViewBCommand { get; set; }
         
-        public MainPageViewModel(INavigationService navigationService)
+        public PageAViewModel(INavigationService navigationService)
             : base(navigationService)
         {
             GoToViewBCommand = new DelegateCommand(OnGoToViewBTapped);
@@ -23,7 +24,7 @@ namespace XFPrismSample.ViewModels
         private async void OnGoToViewBTapped()
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnGoToViewBTapped)}");
-            await _navigationService.NavigateAsync("PageB");
+            await _navigationService.NavigateAsync(nameof(PageB));
         }
     }
 }

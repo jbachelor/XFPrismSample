@@ -1,8 +1,8 @@
 ﻿namespace XFPrismSample.Views
 {
-    public partial class MainPage
+    public partial class PageA
     {
-        public MainPage()
+        public PageA()
         {
             InitializeComponent();
         }

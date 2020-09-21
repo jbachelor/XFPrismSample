@@ -1,23 +1,34 @@
 using System.Diagnostics;
 using Prism.Commands;
 using Prism.Navigation;
+using XFPrismSample.Views;
 
 namespace XFPrismSample.ViewModels
 {
     public class PageBViewModel : ViewModelBase
     {
         public DelegateCommand GoToViewCCommand { get; set; }
+        public DelegateCommand GoToViewCAndRemoveSelfFromNavStackCommand { get; set; }
 
         public PageBViewModel(INavigationService navigationService) : base(navigationService)
         {
-            GoToViewCCommand = new DelegateCommand(OnGoToViewCTapped);
+            GoToViewCAndRemoveSelfFromNavStackCommand = new DelegateCommand(GoToViewCAndRemoveSelfFromNavStackAsync);
+            GoToViewCCommand = new DelegateCommand(GoToViewC);
             Title = "View B";
         }
 
-        private void OnGoToViewCTapped()
+        private async void GoToViewC()
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnGoToViewCTapped)}");
-            _navigationService.NavigateAsync("PageC");
+            string navString = nameof(PageC);
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewC)}: Navigating string=[{navString}]");
+            await _navigationService.NavigateAsync(navString);
+        }
+
+        private async void GoToViewCAndRemoveSelfFromNavStackAsync()
+        {
+            string navString = $"../{nameof(PageC)}";
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}: Navigating string=[{navString}]");
+            await _navigationService.NavigateAsync(navString);
         }
     }
 }
