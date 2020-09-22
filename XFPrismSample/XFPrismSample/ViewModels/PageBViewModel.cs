@@ -20,15 +20,22 @@ namespace XFPrismSample.ViewModels
         private async void GoToViewC()
         {
             string navString = nameof(PageC);
+            var initialUri = _navigationService.GetNavigationUriPath();
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewC)}: Navigating string=[{navString}]");
             await _navigationService.NavigateAsync(navString);
+            var finalUri = _navigationService.GetNavigationUriPath();
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewC)}\n\tBeforeNav: {initialUri}\n\tAfter nav: {finalUri}");
         }
 
         private async void GoToViewCAndRemoveSelfFromNavStackAsync()
         {
+            string initialUri = _navigationService.GetNavigationUriPath();
+
             string navString = $"../{nameof(PageC)}";
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}: Navigating string=[{navString}]");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}: Navigating string=[{navString}]\n\tInitial uri stack: {initialUri}");
             await _navigationService.NavigateAsync(navString);
+            string finalUri = _navigationService.GetNavigationUriPath();
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}\n\tFinal uri stack: {finalUri}");
         }
     }
 }

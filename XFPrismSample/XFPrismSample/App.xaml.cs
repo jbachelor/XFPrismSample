@@ -1,11 +1,13 @@
 using System.Diagnostics;
 using Prism;
 using Prism.Ioc;
+using Prism.Navigation;
 using XFPrismSample.ViewModels;
 using XFPrismSample.Views;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Forms;
+using XFPrismSample.Services;
 
 namespace XFPrismSample
 {
@@ -29,6 +31,7 @@ namespace XFPrismSample
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterTypes)}");
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
+            containerRegistry.RegisterSingleton<INavigationService, MyNavService>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<PageA, PageAViewModel>();
