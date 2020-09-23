@@ -8,6 +8,9 @@ using Xamarin.Essentials.Interfaces;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Forms;
 using XFPrismSample.Services;
+using Prism.DryIoc;
+using DryIoc;
+using Prism.Common;
 
 namespace XFPrismSample
 {
@@ -27,11 +30,33 @@ namespace XFPrismSample
             await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(PageA)}");
         }
 
+        protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
+        {
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterRequiredTypes)}");
+            base.RegisterRequiredTypes(containerRegistry);
+
+            containerRegistry.GetContainer().Register<INavigationService, MyNavService>();
+            containerRegistry.GetContainer().Register<INavigationService>(
+                made: Made.Of(() => SetPage(Arg.Of<INavigationService>(), Arg.Of<Page>())),
+                setup: Setup.Decorator);
+        }
+
+        internal static INavigationService SetPage(INavigationService navigationService, Page page)
+        {
+            Debug.WriteLine($"**** {nameof(App)}.{nameof(SetPage)}");
+            if (navigationService is IPageAware pageAware)
+            {
+                pageAware.Page = page;
+            }
+
+            return navigationService;
+        }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterTypes)}");
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
-            containerRegistry.RegisterSingleton<INavigationService, MyNavService>();
+            containerRegistry.Register<INavigationService, MyNavService>("MyNavSvc");
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<PageA, PageAViewModel>();

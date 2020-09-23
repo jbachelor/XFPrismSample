@@ -5,7 +5,7 @@ namespace XFPrismSample.ViewModels
 {
     public class PageCViewModel : ViewModelBase
     {
-        public PageCViewModel(INavigationService navigationService) : base(navigationService)
+        public PageCViewModel(INavigationService MyNavSvc) : base(MyNavSvc)
         {
             Title = "View C";
         }
@@ -13,7 +13,7 @@ namespace XFPrismSample.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatedTo)} NavUri: {_navigationService.GetNavigationUriPath()}");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatedTo)} NavUri: {MyNavSvc.GetNavigationUriPath()}");
         }
     }
 }

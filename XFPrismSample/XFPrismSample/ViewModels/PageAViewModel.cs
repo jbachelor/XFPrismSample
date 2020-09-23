@@ -14,8 +14,8 @@ namespace XFPrismSample.ViewModels
     {
         public DelegateCommand GoToViewBCommand { get; set; }
         
-        public PageAViewModel(INavigationService navigationService)
-            : base(navigationService)
+        public PageAViewModel(INavigationService MyNavSvc)
+            : base(MyNavSvc)
         {
             GoToViewBCommand = new DelegateCommand(OnGoToViewBTapped);
             Title = "Main Page";
@@ -24,7 +24,7 @@ namespace XFPrismSample.ViewModels
         private async void OnGoToViewBTapped()
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnGoToViewBTapped)}");
-            await _navigationService.NavigateAsync(nameof(PageB));
+            await MyNavSvc.NavigateAsync(nameof(PageB));
         }
     }
 }

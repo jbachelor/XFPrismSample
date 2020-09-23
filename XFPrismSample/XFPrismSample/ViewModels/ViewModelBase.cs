@@ -10,7 +10,7 @@ namespace XFPrismSample.ViewModels
 {
     public class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
     {
-        protected INavigationService _navigationService { get; private set; }
+        protected INavigationService MyNavSvc { get; private set; }
 
         private string _title;
         public string Title
@@ -19,10 +19,10 @@ namespace XFPrismSample.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        public ViewModelBase(INavigationService navigationService)
+        public ViewModelBase(INavigationService MyNavSvc)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}: ctor");
-            _navigationService = navigationService;
+            Debug.WriteLine($"**** {this.GetType().Name}: ctor. NavSvc: {MyNavSvc.GetType()}");
+            this.MyNavSvc = MyNavSvc;
         }
 
         public virtual void Initialize(INavigationParameters parameters)
