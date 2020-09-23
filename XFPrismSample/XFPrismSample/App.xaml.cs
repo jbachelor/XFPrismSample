@@ -56,9 +56,7 @@ namespace XFPrismSample
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterTypes)}");
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
-            containerRegistry.Register<INavigationService, MyNavService>("MyNavSvc");
-            containerRegistry.Register<INavigationService, PageNavigationService>(NavigationServiceName);
-
+            containerRegistry.Register<INavigationService, MyNavService>(NavigationServiceName);
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<PageA, PageAViewModel>();
             containerRegistry.RegisterForNavigation<PageB, PageBViewModel>();
