@@ -30,6 +30,17 @@ namespace XFPrismSample
             await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(PageA)}");
         }
 
+        internal static INavigationService SetPage(INavigationService navigationService, Page page)
+        {
+            Debug.WriteLine($"**** {nameof(App)}.{nameof(SetPage)}");
+            if (navigationService is IPageAware pageAware)
+            {
+                pageAware.Page = page;
+            }
+
+            return navigationService;
+        }
+        
         protected override void RegisterRequiredTypes(IContainerRegistry containerRegistry)
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterRequiredTypes)}");
@@ -41,22 +52,12 @@ namespace XFPrismSample
                 setup: Setup.Decorator);
         }
 
-        internal static INavigationService SetPage(INavigationService navigationService, Page page)
-        {
-            Debug.WriteLine($"**** {nameof(App)}.{nameof(SetPage)}");
-            if (navigationService is IPageAware pageAware)
-            {
-                pageAware.Page = page;
-            }
-
-            return navigationService;
-        }
-
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterTypes)}");
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
             containerRegistry.Register<INavigationService, MyNavService>("MyNavSvc");
+            containerRegistry.Register<INavigationService, PageNavigationService>(NavigationServiceName);
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<PageA, PageAViewModel>();
