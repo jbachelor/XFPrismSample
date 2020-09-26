@@ -7,28 +7,23 @@ namespace XFPrismSample.Services
     {
         public static NavigationMode GetNavigationMode(this INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(NavigationParametersExtensions)}.{nameof(GetNavigationMode)}");
-            var internalParams = (INavigationParametersInternal)parameters;
+            NavigationMode modeToReturn = NavigationMode.Refresh;
+            var internalParams = (INavigationParametersInternal) parameters;
+            
             if (internalParams.ContainsKey(KnownInternalParameters.NavigationMode))
-                return internalParams.GetValue<NavigationMode>(KnownInternalParameters.NavigationMode);
-
-            throw new System.ArgumentNullException("NavigationMode is not available");
-        }
-
-        public static NavigationMode GetNavigationModeDeux(this INavigationParameters parameters)
-        {
-            Debug.WriteLine($"**** {nameof(NavigationParametersExtensions)}.{nameof(GetNavigationModeDeux)}");
-            var internalParams = (INavigationParametersInternal)parameters;
-            if (internalParams.ContainsKey(KnownInternalParameters.NavigationMode))
-                return internalParams.GetValue<NavigationMode>(KnownInternalParameters.NavigationMode);
+            {
+                modeToReturn = internalParams.GetValue<NavigationMode>(KnownInternalParameters.NavigationMode);
+                Debug.WriteLine($"###### {nameof(NavigationParametersExtensions)}.{nameof(GetNavigationMode)}: returning=[{modeToReturn}]");
+                return modeToReturn;
+            }
 
             throw new System.ArgumentNullException("NavigationMode is not available");
         }
 
         internal static INavigationParametersInternal GetNavigationParametersInternal(this INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(NavigationParametersExtensions)}.{nameof(GetNavigationParametersInternal)}");
-            return (INavigationParametersInternal)parameters;
+            Debug.WriteLine($"###### {nameof(NavigationParametersExtensions)}.{nameof(GetNavigationParametersInternal)}");
+            return (INavigationParametersInternal) parameters;
         }
     }
 }

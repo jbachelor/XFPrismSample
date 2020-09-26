@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="XFPrismSample.Views.ConfirmNavigationDialog"
+       Padding="20,50">
+    <StackLayout VerticalOptions="CenterAndExpand"
+                 HorizontalOptions="CenterAndExpand">
+        <Label Text="You're navigating, like it or not." />
+        <Button Text="ok"
+                Command="{Binding DoNavigationCommand}"/>
+    </StackLayout>
+</Frame>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Prism.AppModel;
 using Prism.Common;
@@ -15,6 +16,7 @@ namespace XFPrismSample.Services
     {
         public static void InvokeViewAndViewModelAction<T>(object view, Action<T> action) where T : class
         {
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(InvokeViewAndViewModelAction)}: view=[{view}]");
             if (view is T viewAsT)
                 action(viewAsT);
 
@@ -37,6 +39,7 @@ namespace XFPrismSample.Services
 
         public static async Task InvokeViewAndViewModelActionAsync<T>(object view, Func<T, Task> action) where T : class
         {
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(InvokeViewAndViewModelActionAsync)}: view=[{view}]");
             if (view is T viewAsT)
                 await action(viewAsT);
 
@@ -59,6 +62,7 @@ namespace XFPrismSample.Services
 
         public static void DestroyPage(Page page)
         {
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(DestroyPage)}: page=[{page}]");
             try
             {
                 DestroyChildren(page);
@@ -76,6 +80,7 @@ namespace XFPrismSample.Services
 
         private static void DestroyChildren(Page page)
         {
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(DestroyChildren)}: page=[{page}]");
             switch (page)
             {
                 case MasterDetailPage mdp:
@@ -105,6 +110,7 @@ namespace XFPrismSample.Services
 
         public static void DestroyWithModalStack(Page page, IList<Page> modalStack)
         {
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(DestroyWithModalStack)}: page=[{page}]");
             foreach (var childPage in modalStack.Reverse())
             {
                 DestroyPage(childPage);
@@ -115,7 +121,6 @@ namespace XFPrismSample.Services
 
         public static Task<bool> CanNavigateAsync(object page, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(CanNavigateAsync)}");
             if (page is IConfirmNavigationAsync confirmNavigationItem)
                 return confirmNavigationItem.CanNavigateAsync(parameters);
 
@@ -125,34 +130,38 @@ namespace XFPrismSample.Services
                     return confirmNavigationBindingContext.CanNavigateAsync(parameters);
             }
 
-            return Task.FromResult(CanNavigate(page, parameters));
+            var canNavigate = Task.FromResult(CanNavigate(page, parameters));
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(CanNavigateAsync)}: returning={canNavigate}");
+            return canNavigate;
         }
 
         public static bool CanNavigate(object page, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(CanNavigate)}");
+            bool result = true;
             if (page is IConfirmNavigation confirmNavigationItem)
-                return confirmNavigationItem.CanNavigate(parameters);
-
-            if (page is BindableObject bindableObject)
+            {
+                result = confirmNavigationItem.CanNavigate(parameters);
+            }
+            else if (page is BindableObject bindableObject)
             {
                 if (bindableObject.BindingContext is IConfirmNavigation confirmNavigationBindingContext)
-                    return confirmNavigationBindingContext.CanNavigate(parameters);
+                    result = confirmNavigationBindingContext.CanNavigate(parameters);
             }
 
-            return true;
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(CanNavigate)}: returning={result}");
+            return result;
         }
 
         public static void OnNavigatedFrom(object page, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(OnNavigatedFrom)}");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(OnNavigatedFrom)}: page={page}");
             if (page != null)
                 InvokeViewAndViewModelAction<INavigatedAware>(page, v => v.OnNavigatedFrom(parameters));
         }
 
         public static async Task OnInitializedAsync(object page, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(OnInitializedAsync)}: [{page}]");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(OnInitializedAsync)}: [{page}]");
             if (page is null) return;
 
             InvokeViewAndViewModelAction<IAbracadabra>(page, v => Abracadabra(v, parameters));
@@ -162,7 +171,7 @@ namespace XFPrismSample.Services
 
         internal static void Abracadabra(object page, IEnumerable<KeyValuePair<string, object>> parameters)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(Abracadabra)}: [{page}]");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(Abracadabra)}: [{page}]");
             var props = page.GetType()
                             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                             .Where(x => x.CanWrite);
@@ -201,14 +210,14 @@ namespace XFPrismSample.Services
 
         public static void OnNavigatedTo(object page, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(OnNavigatedTo)}");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(OnNavigatedTo)}: page=[{page}]");
             if (page != null)
                 InvokeViewAndViewModelAction<INavigatedAware>(page, v => v.OnNavigatedTo(parameters));
         }
 
         public static Page GetOnNavigatedToTarget(Page page, Page mainPage, bool useModalNavigation)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(GetOnNavigatedToTarget)}: [{page}], [{mainPage}]");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(GetOnNavigatedToTarget)}:\n\tpage=[{page}]\n\tmainPage=[{mainPage}]");
             Page target;
             if (useModalNavigation)
             {
@@ -232,7 +241,7 @@ namespace XFPrismSample.Services
 
         public static Page GetOnNavigatedToTargetFromChild(Page target)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(GetOnNavigatedToTargetFromChild)}");
+            var sb = new StringBuilder($"###### {nameof(PageUtilities)}.{nameof(GetOnNavigatedToTargetFromChild)}: original target={target}");
             Page child = null;
 
             if (target is MasterDetailPage)
@@ -247,12 +256,15 @@ namespace XFPrismSample.Services
             if (child != null)
                 target = GetOnNavigatedToTargetFromChild(child);
 
+            sb.AppendLine($"\n\tnew target=[{target}]");
+            Debug.WriteLine(sb.ToString());
+
             return target;
         }
 
         public static Page GetPreviousPage(Page currentPage, System.Collections.Generic.IReadOnlyList<Page> navStack)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(GetPreviousPage)}");
+            var sb = new StringBuilder($"###### {nameof(PageUtilities)}.{nameof(GetPreviousPage)}:\n\tcurrentPage=[{currentPage}]\n");
             Page previousPage = null;
 
             int currentPageIndex = GetCurrentPageIndex(currentPage, navStack);
@@ -260,12 +272,14 @@ namespace XFPrismSample.Services
             if (navStack.Count >= 0 && previousPageIndex >= 0)
                 previousPage = navStack[previousPageIndex];
 
+            sb.AppendLine($"\n\tpreviousPage=[{previousPage}]");
+            Debug.WriteLine(sb.ToString());
             return previousPage;
         }
 
         public static int GetCurrentPageIndex(Page currentPage, System.Collections.Generic.IReadOnlyList<Page> navStack)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(GetCurrentPageIndex)}: [{currentPage}]");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(GetCurrentPageIndex)}: [{currentPage}]");
             int stackCount = navStack.Count;
             for (int x = 0; x < stackCount; x++)
             {
@@ -279,19 +293,22 @@ namespace XFPrismSample.Services
 
         public static Page GetCurrentPage(Page mainPage)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(GetCurrentPage)}: [{mainPage}]");
+            var sb = new StringBuilder($"###### {nameof(PageUtilities)}.{nameof(GetCurrentPage)}:\n\tmainPage=[{mainPage}]\n");
             var page = mainPage;
 
             var lastModal = page.Navigation.ModalStack.LastOrDefault();
             if (lastModal != null)
                 page = lastModal;
 
-            return GetOnNavigatedToTargetFromChild(page);
+            var pageToReturn = GetOnNavigatedToTargetFromChild(page);
+            sb.AppendLine($"\n\tpageToReturn=[{pageToReturn}]");
+            
+            return pageToReturn;
         }
 
         public static void HandleSystemGoBack(Page previousPage, Page currentPage)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(HandleSystemGoBack)}");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(HandleSystemGoBack)}\n\tpreviousPage=[{previousPage}]\n\tcurrentPage=[{currentPage}]");
             var parameters = new NavigationParameters();
             parameters.GetNavigationParametersInternal().Add(KnownInternalParameters.NavigationMode, NavigationMode.Back);
             OnNavigatedFrom(previousPage, parameters);
@@ -301,7 +318,7 @@ namespace XFPrismSample.Services
 
         internal static bool HasDirectNavigationPageParent(Page page)
         {
-            Debug.WriteLine($"**** {nameof(PageUtilities)}.{nameof(HasDirectNavigationPageParent)}: [{page}]");
+            Debug.WriteLine($"###### {nameof(PageUtilities)}.{nameof(HasDirectNavigationPageParent)}:\n\tpage=[{page}]");
             return page?.Parent != null && page?.Parent is NavigationPage;
         }
 

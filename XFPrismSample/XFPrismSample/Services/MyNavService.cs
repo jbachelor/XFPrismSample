@@ -35,7 +35,7 @@ namespace XFPrismSample.Services
 
         public MyNavService(IContainerExtension container, IApplicationProvider applicationProvider, IPageBehaviorFactory pageBehaviorFactory, ILoggerFacade logger)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}:  ctor");
+            Debug.WriteLine($"###### {this.GetType().Name}:  ctor");
 
             _container = container;
             _applicationProvider = applicationProvider;
@@ -76,7 +76,7 @@ namespace XFPrismSample.Services
         /// <returns>If <c>true</c> a go back operation was successful. If <c>false</c> the go back operation failed.</returns>
         protected async virtual Task<INavigationResult> GoBackInternal(INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoBackInternal)}(INavigationParameters parameters, bool? useModalNavigation, bool animated)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(GoBackInternal)}(INavigationParameters parameters, bool? useModalNavigation, bool animated)");
             var result = new NavigationResult();
             Page page = null;
             try
@@ -125,7 +125,7 @@ namespace XFPrismSample.Services
 
         private static Exception GetGoBackException(Page currentPage, Page mainPage)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(GetGoBackException)}: [{currentPage}], [{mainPage}]");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(GetGoBackException)}: [{currentPage}], [{mainPage}]");
             if(IsMainPage(currentPage, mainPage))
             {
                 return new NavigationException(NavigationException.CannotPopApplicationMainPage, currentPage);
@@ -144,7 +144,7 @@ namespace XFPrismSample.Services
 
         private static bool IsMainPage(Page currentPage, Page mainPage)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(IsMainPage)}: [{currentPage}], [{mainPage}]");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(IsMainPage)}: [{currentPage}], [{mainPage}]");
             if (currentPage == mainPage)
             {
                 return true;
@@ -182,7 +182,7 @@ namespace XFPrismSample.Services
         /// <remarks>Only works when called from a View within a NavigationPage</remarks>
         protected async virtual Task<INavigationResult> GoBackToRootInternal(INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoBackToRootInternal)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(GoBackToRootInternal)}");
             var result = new NavigationResult();
             Page page = null;
             try
@@ -231,7 +231,7 @@ namespace XFPrismSample.Services
         /// <param name="name">The name of the target to navigate to.</param>
         public virtual Task<INavigationResult> NavigateAsync(string name)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(NavigateAsync)}(string name): [{name}]");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(NavigateAsync)}(string name): [{name}]");
             return NavigateAsync(name, null);
         }
 
@@ -242,13 +242,13 @@ namespace XFPrismSample.Services
         /// <param name="parameters">The navigation parameters</param>
         public virtual Task<INavigationResult> NavigateAsync(string name, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(NavigateAsync)}(string name, INavigationParameters parameters)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(NavigateAsync)}(string name, INavigationParameters parameters)");
             return NavigateInternal(name, parameters, null, true);
         }
 
         Task<INavigationResult> IPlatformNavigationService.NavigateAsync(string name, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(IPlatformNavigationService)}.{nameof(NavigateAsync)}(string name, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(IPlatformNavigationService)}.{nameof(NavigateAsync)}(string name, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
             return NavigateInternal(name, parameters, useModalNavigation, animated);
         }
 
@@ -261,7 +261,7 @@ namespace XFPrismSample.Services
         /// <param name="animated">If <c>true</c> the transition is animated, if <c>false</c> there is no animation on transition.</param>
         protected virtual Task<INavigationResult> NavigateInternal(string name, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(NavigateInternal)}(string name, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(NavigateInternal)}(string name, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
             if (name.StartsWith(RemovePageRelativePath))
                 name = name.Replace(RemovePageRelativePath, RemovePageInstruction);
 
@@ -278,7 +278,7 @@ namespace XFPrismSample.Services
         /// </example>
         public virtual Task<INavigationResult> NavigateAsync(Uri uri)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(NavigateAsync)}(Uri uri)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(NavigateAsync)}(Uri uri)");
             return NavigateAsync(uri, null);
         }
 
@@ -293,13 +293,13 @@ namespace XFPrismSample.Services
         /// </example>
         public virtual Task<INavigationResult> NavigateAsync(Uri uri, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(NavigateAsync)}(Uri uri, INavigationParameters parameters)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(NavigateAsync)}(Uri uri, INavigationParameters parameters)");
             return NavigateInternal(uri, parameters, null, true);
         }
 
         Task<INavigationResult> IPlatformNavigationService.NavigateAsync(Uri uri, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(IPlatformNavigationService)}.{nameof(NavigateAsync)}(Uri uri, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(IPlatformNavigationService)}.{nameof(NavigateAsync)}(Uri uri, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
             return NavigateInternal(uri, parameters, useModalNavigation, animated);
         }
 
@@ -316,7 +316,7 @@ namespace XFPrismSample.Services
         /// </example>
         protected async virtual Task<INavigationResult> NavigateInternal(Uri uri, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(NavigateInternal)}(Uri uri, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(NavigateInternal)}(Uri uri, INavigationParameters parameters, bool? useModalNavigation, bool animated)");
             var result = new NavigationResult();
             try
             {
@@ -352,7 +352,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task ProcessNavigation(Page currentPage, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigation)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigation)}");
             if (segments.Count == 0)
                 return;
 
@@ -398,7 +398,7 @@ namespace XFPrismSample.Services
 
         protected virtual Task ProcessNavigationForRemovePageSegments(Page currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForRemovePageSegments)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForRemovePageSegments)}");
             if (!PageUtilities.HasDirectNavigationPageParent(currentPage))
                 throw new NavigationException(NavigationException.RelativeNavigationRequiresNavigationPage, currentPage);
 
@@ -410,7 +410,7 @@ namespace XFPrismSample.Services
 
         bool CanRemoveAndPush(Queue<string> segments)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(CanRemoveAndPush)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(CanRemoveAndPush)}");
             if (segments.All(x => x == RemovePageSegment))
                 return false;
             else
@@ -419,7 +419,7 @@ namespace XFPrismSample.Services
 
         Task RemoveAndGoBack(Page currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RemoveAndGoBack)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(RemoveAndGoBack)}");
             List<Page> pagesToRemove = new List<Page>();
 
             var currentPageIndex = currentPage.Navigation.NavigationStack.Count;
@@ -440,7 +440,7 @@ namespace XFPrismSample.Services
 
         async Task RemoveAndPush(Page currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RemoveAndPush)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(RemoveAndPush)}");
             var pagesToRemove = new List<Page>
             {
                 currentPage
@@ -464,8 +464,8 @@ namespace XFPrismSample.Services
 
         private static void RemovePagesFromNavigationPage(Page currentPage, List<Page> pagesToRemove)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(RemovePagesFromNavigationPage)}");
             var navigationPage = (NavigationPage)currentPage.Parent;
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(RemovePagesFromNavigationPage)}\n\tcurrentPage=[{currentPage}]\n\tpagesToRemove[0]=[{pagesToRemove[0]}]\n\tnavigationPage=[{navigationPage}]");
             foreach (var page in pagesToRemove)
             {
                 navigationPage.Navigation.RemovePage(page);
@@ -475,13 +475,13 @@ namespace XFPrismSample.Services
 
         protected virtual Task ProcessNavigationForAbsoulteUri(Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForAbsoulteUri)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForAbsoulteUri)}");
             return ProcessNavigation(null, segments, parameters, useModalNavigation, animated);
         }
 
         protected virtual async Task ProcessNavigationForRootPage(string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForRootPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForRootPage)}");
             var nextPage = CreatePageFromSegment(nextSegment);
 
             await ProcessNavigation(nextPage, segments, parameters, useModalNavigation, animated);
@@ -500,7 +500,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task ProcessNavigationForContentPage(Page currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForContentPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForContentPage)}");
             var nextPageType = PageNavigationRegistry.GetPageType(UriParsingHelper.GetSegmentName(nextSegment));
             bool useReverse = UseReverseNavigation(currentPage, nextPageType) && !(useModalNavigation.HasValue && useModalNavigation.Value);
             if (!useReverse)
@@ -522,7 +522,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task ProcessNavigationForNavigationPage(NavigationPage currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForNavigationPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForNavigationPage)}");
             if (currentPage.Navigation.NavigationStack.Count == 0)
             {
                 await UseReverseNavigation(currentPage, nextSegment, segments, parameters, false, animated);
@@ -580,7 +580,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task ProcessNavigationForTabbedPage(TabbedPage currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForTabbedPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForTabbedPage)}");
             var nextPage = CreatePageFromSegment(nextSegment);
             await ProcessNavigation(nextPage, segments, parameters, useModalNavigation, animated);
             await DoNavigateAction(currentPage, nextSegment, nextPage, parameters, async () =>
@@ -591,7 +591,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task ProcessNavigationForCarouselPage(CarouselPage currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForCarouselPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForCarouselPage)}");
             var nextPage = CreatePageFromSegment(nextSegment);
             await ProcessNavigation(nextPage, segments, parameters, useModalNavigation, animated);
             await DoNavigateAction(currentPage, nextSegment, nextPage, parameters, async () =>
@@ -602,7 +602,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task ProcessNavigationForMasterDetailPage(MasterDetailPage currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ProcessNavigationForMasterDetailPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ProcessNavigationForMasterDetailPage)}");
             bool isPresented = GetMasterDetailPageIsPresented(currentPage);
 
             var detail = currentPage.Detail;
@@ -704,7 +704,7 @@ namespace XFPrismSample.Services
 
         protected static bool GetClearNavigationPageNavigationStack(NavigationPage page)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(GetClearNavigationPageNavigationStack)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(GetClearNavigationPageNavigationStack)}");
             if (page is INavigationPageOptions iNavigationPage)
                 return iNavigationPage.ClearNavigationStackOnNavigation;
 
@@ -716,7 +716,7 @@ namespace XFPrismSample.Services
 
         protected static async Task DoNavigateAction(Page fromPage, string toSegment, Page toPage, INavigationParameters parameters, Func<Task> navigationAction = null, Action<INavigationParameters> onNavigationActionCompleted = null)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(DoNavigateAction)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(DoNavigateAction)}");
             var segmentParameters = UriParsingHelper.GetSegmentParameters(toSegment, parameters);
             segmentParameters.GetNavigationParametersInternal().Add(KnownInternalParameters.NavigationMode, NavigationMode.New);
 
@@ -740,7 +740,7 @@ namespace XFPrismSample.Services
 
         static async Task OnInitializedAsync(Page toPage, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(OnInitializedAsync)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(OnInitializedAsync)}");
             await PageUtilities.OnInitializedAsync(toPage, parameters);
 
             if (toPage is TabbedPage tabbedPage)
@@ -768,7 +768,7 @@ namespace XFPrismSample.Services
 
         private static void OnNavigatedTo(Page toPage, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(OnNavigatedTo)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(OnNavigatedTo)}");
             PageUtilities.OnNavigatedTo(toPage, parameters);
 
             if (toPage is TabbedPage tabbedPage)
@@ -790,7 +790,7 @@ namespace XFPrismSample.Services
 
         private static void OnNavigatedFrom(Page fromPage, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(OnNavigatedFrom)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(OnNavigatedFrom)}");
             PageUtilities.OnNavigatedFrom(fromPage, parameters);
 
             if (fromPage is TabbedPage tabbedPage)
@@ -812,7 +812,7 @@ namespace XFPrismSample.Services
 
         protected virtual Page CreatePage(string segmentName)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(CreatePage)}: [{segmentName}]");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(CreatePage)}: [{segmentName}]");
             try
             {
                 return _container.Resolve<object>(segmentName) as Page;
@@ -828,7 +828,7 @@ namespace XFPrismSample.Services
 
         protected virtual Page CreatePageFromSegment(string segment)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(CreatePageFromSegment)}: [{segment}]");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(CreatePageFromSegment)}: [{segment}]");
             string segmentName = null;
             try
             {
@@ -859,7 +859,7 @@ namespace XFPrismSample.Services
 
         void ConfigurePages(Page page, string segment)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ConfigurePages)}: [{page}], [{segment}]");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ConfigurePages)}: [{page}], [{segment}]");
             if (page is TabbedPage)
             {
                 ConfigureTabbedPage((TabbedPage)page, segment);
@@ -872,7 +872,7 @@ namespace XFPrismSample.Services
 
         void ConfigureTabbedPage(TabbedPage tabbedPage, string segment)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ConfigureTabbedPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ConfigureTabbedPage)}");
             foreach (var child in tabbedPage.Children)
             {
                 PageUtilities.SetAutowireViewModelOnPage(child);
@@ -926,7 +926,7 @@ namespace XFPrismSample.Services
 
         void ConfigureCarouselPage(CarouselPage carouselPage, string segment)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(ConfigureCarouselPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(ConfigureCarouselPage)}");
             foreach (var child in carouselPage.Children)
             {
                 PageUtilities.SetAutowireViewModelOnPage(child);
@@ -939,7 +939,7 @@ namespace XFPrismSample.Services
 
         private static void SelectPageTab(Page page, INavigationParameters parameters)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(SelectPageTab)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(SelectPageTab)}");
             if (page is TabbedPage tabbedPage)
             {
                 TabbedPageSelectTab(tabbedPage, parameters);
@@ -995,7 +995,7 @@ namespace XFPrismSample.Services
 
         protected virtual async Task UseReverseNavigation(Page currentPage, string nextSegment, Queue<string> segments, INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(UseReverseNavigation)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(UseReverseNavigation)}");
             var navigationStack = new Stack<string>();
 
             if (!String.IsNullOrWhiteSpace(nextSegment))
@@ -1069,7 +1069,7 @@ namespace XFPrismSample.Services
 
         protected virtual Task DoPush(Page currentPage, Page page, bool? useModalNavigation, bool animated, bool insertBeforeLast = false, int navigationOffset = 0)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(DoPush)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(DoPush)}");
             if (page == null)
                 throw new ArgumentNullException(nameof(page));
 
@@ -1103,7 +1103,7 @@ namespace XFPrismSample.Services
 
         protected virtual Task InsertPageBefore(Page currentPage, Page page, int pageOffset)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(InsertPageBefore)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(InsertPageBefore)}");
             var navigationPage = currentPage.Parent as NavigationPage;
             var firstPage = currentPage.Navigation.NavigationStack.Skip(pageOffset).FirstOrDefault();
             currentPage.Navigation.InsertPageBefore(page, firstPage);
@@ -1112,7 +1112,7 @@ namespace XFPrismSample.Services
 
         protected virtual Task<Page> DoPop(INavigation navigation, bool useModalNavigation, bool animated)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(DoPop)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(DoPop)}");
             if (useModalNavigation)
                 return navigation.PopModalAsync(animated);
             else
@@ -1121,13 +1121,13 @@ namespace XFPrismSample.Services
 
         protected virtual Page GetCurrentPage()
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GetCurrentPage)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(GetCurrentPage)}");
             return _page != null ? _page : _applicationProvider.MainPage;
         }
 
         internal static bool UseModalNavigation(Page currentPage, bool? useModalNavigationDefault)
         {
-            Debug.WriteLine($"**** {nameof(UseModalNavigation)}.{nameof(UseModalNavigation)}");
+            Debug.WriteLine($"###### {nameof(UseModalNavigation)}.{nameof(UseModalNavigation)}");
             bool useModalNavigation = true;
 
             if (useModalNavigationDefault.HasValue)
@@ -1142,7 +1142,7 @@ namespace XFPrismSample.Services
 
         internal bool UseModalGoBack(Page currentPage, bool? useModalNavigationDefault)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(UseModalGoBack)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(UseModalGoBack)}");
             if (useModalNavigationDefault.HasValue)
                 return useModalNavigationDefault.Value;
             else if (currentPage is NavigationPage navPage)
@@ -1155,7 +1155,7 @@ namespace XFPrismSample.Services
 
         private bool GoBackModal(NavigationPage navPage)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoBackModal)}");
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(GoBackModal)}");
             if (navPage.CurrentPage != navPage.RootPage)
                 return false;
             else if (navPage.CurrentPage == navPage.RootPage && navPage.Parent is Application && _applicationProvider.MainPage != navPage)
@@ -1170,7 +1170,7 @@ namespace XFPrismSample.Services
 
         internal static bool UseReverseNavigation(Page currentPage, Type nextPageType)
         {
-            Debug.WriteLine($"**** {nameof(MyNavService)}.{nameof(UseReverseNavigation)}");
+            Debug.WriteLine($"###### {nameof(MyNavService)}.{nameof(UseReverseNavigation)}");
             return PageUtilities.HasNavigationPageParent(currentPage) && PageUtilities.IsSameOrSubclassOf<ContentPage>(nextPageType);
         }
     }

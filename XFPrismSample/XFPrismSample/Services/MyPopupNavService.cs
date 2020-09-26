@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -28,11 +29,13 @@ namespace XFPrismSample.Services
                                           IApplicationProvider applicationProvider, IPageBehaviorFactory pageBehaviorFactory)
             : base(container, applicationProvider, pageBehaviorFactory, null) // jjb: Using null for the required LoggerFacade... Kosher?
         {
+            Debug.WriteLine($"###### {this.GetType().Name}: ctor");
             _popupNavigation = popupNavigation;
         }
 
         protected override async Task<INavigationResult> GoBackInternal(INavigationParameters parameters, bool? useModalNavigation, bool animated)
         {
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(GoBackInternal)}");
             INavigationResult result = null;
             try
             {
@@ -191,6 +194,7 @@ namespace XFPrismSample.Services
 
         private static void OnNavigatedFrom(Page fromPage, INavigationParameters parameters)
         {
+            Debug.WriteLine($"###### {nameof(MyPopupNavService)}.{nameof(OnNavigatedFrom)}: fromPage=[{fromPage}]");
             PageUtilities.OnNavigatedFrom(fromPage, parameters);
 
             if (fromPage is TabbedPage tabbedPage)
@@ -280,6 +284,7 @@ namespace XFPrismSample.Services
 
         protected override async Task<Page> DoPop(INavigation navigation, bool useModalNavigation, bool animated)
         {
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(DoPop)}");
             if (_popupNavigation.PopupStack.Count > 0 || _page is PopupPage)
             {
                 await _popupNavigation.PopAsync(animated);
@@ -291,6 +296,7 @@ namespace XFPrismSample.Services
 
         protected override async Task DoPush(Page currentPage, Page page, bool? useModalNavigation, bool animated, bool insertBeforeLast = false, int navigationOffset = 0)
         {
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(DoPush)}\n\tcurrentPage=[{currentPage}]\n\tpage=[{page}]\n\tinsertBeforeLast={insertBeforeLast}]\n\tnavigationOffset={navigationOffset}");
             switch (page)
             {
                 case PopupPage popup:
@@ -322,12 +328,18 @@ namespace XFPrismSample.Services
 
         protected override Page GetCurrentPage()
         {
+            Page pageToReturn = null;
             if (_popupNavigation.PopupStack.Any())
             {
-                return _popupNavigation.PopupStack.LastOrDefault();
+                pageToReturn = _popupNavigation.PopupStack.LastOrDefault();
+            }
+            else
+            {
+                pageToReturn = base.GetCurrentPage();
             }
 
-            return base.GetCurrentPage();
+            Debug.WriteLine($"###### {this.GetType().Name}.{nameof(GetCurrentPage)}: returning [{pageToReturn}]");
+            return pageToReturn;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Prism.Common;
+﻿using System.Diagnostics;
+using Prism.Common;
 using Prism.Navigation;
 using Prism.Plugin.Popups.Extensions;
 using Rg.Plugins.Popup.Contracts;
@@ -19,6 +20,7 @@ namespace XFPrismSample.Services
 
         public static INavigationParameters AddNavigationMode(this INavigationParameters parameters, NavigationMode mode)
         {
+            Debug.WriteLine($"###### {nameof(MyPopupUtilities)}.{nameof(AddNavigationMode)}:\n\tmode=[{mode}]\n\tNavModeKey=[{NavigationModeKey}]");
             ((INavigationParametersInternal)parameters).Add(NavigationModeKey, mode);
             return parameters;
         }
@@ -36,7 +38,11 @@ namespace XFPrismSample.Services
             if (page == null)
                 page = applicationProvider.MainPage;
 
-            return page.GetDisplayedPage();
+            var displayedPage = page.GetDisplayedPage();
+            
+            Debug.WriteLine($"###### {nameof(MyPopupUtilities)}.{nameof(TopPage)}: returning=[{displayedPage}]");
+            
+            return displayedPage;
         }
 
         public static Page GetOnNavigatedToTarget(IPopupNavigation popupNavigation, IApplicationProvider applicationProvider)
@@ -52,7 +58,9 @@ namespace XFPrismSample.Services
             if (page == null)
                 page = applicationProvider.MainPage;
 
-            return page.GetDisplayedPage();
+            var displayedPage = page.GetDisplayedPage();
+            Debug.WriteLine($"###### {nameof(MyPopupUtilities)}.{nameof(GetOnNavigatedToTarget)}: returning=[{displayedPage}]");
+            return displayedPage;
         }
     }
 }
