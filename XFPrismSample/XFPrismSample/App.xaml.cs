@@ -11,6 +11,7 @@ using XFPrismSample.Services;
 using Prism.DryIoc;
 using DryIoc;
 using Prism.Common;
+using Prism.Plugin.Popups;
 
 namespace XFPrismSample
 {
@@ -27,7 +28,11 @@ namespace XFPrismSample
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnInitialized)}");
             InitializeComponent();
 
-            await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(PageA)}");
+            var navResult = await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(PageA)}");
+            if (navResult.Success == false)
+            {
+                Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnInitialized)}: FAILED NAVIGATION: {navResult.Exception}");                
+            }
         }
 
         internal static INavigationService SetPage(INavigationService navigationService, Page page)
@@ -46,7 +51,7 @@ namespace XFPrismSample
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterRequiredTypes)}");
             base.RegisterRequiredTypes(containerRegistry);
 
-            containerRegistry.GetContainer().Register<INavigationService, MyNavService>();
+            containerRegistry.GetContainer().Register<INavigationService, MyPopupNavService>();
             containerRegistry.GetContainer().Register<INavigationService>(
                 made: Made.Of(() => SetPage(Arg.Of<INavigationService>(), Arg.Of<Page>())),
                 setup: Setup.Decorator);
@@ -56,11 +61,14 @@ namespace XFPrismSample
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterTypes)}");
             containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
-            containerRegistry.Register<INavigationService, MyNavService>(NavigationServiceName);
+            containerRegistry.Register<INavigationService, MyPopupNavService>(NavigationServiceName);
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<PageA, PageAViewModel>();
             containerRegistry.RegisterForNavigation<PageB, PageBViewModel>();
             containerRegistry.RegisterForNavigation<PageC, PageCViewModel>();
+
+            //containerRegistry.RegisterPopupNavigationService();
+            containerRegistry.RegisterPopupDialogService();
         }
 
         protected override void OnStart()

@@ -14,8 +14,8 @@ namespace XFPrismSample.ViewModels
     {
         public DelegateCommand GoToViewBCommand { get; set; }
         
-        public PageAViewModel(INavigationService MyNavSvc)
-            : base(MyNavSvc)
+        public PageAViewModel(INavigationService navigationService)
+            : base(navigationService)
         {
             GoToViewBCommand = new DelegateCommand(OnGoToViewBTapped);
             Title = "Main Page";
@@ -24,7 +24,11 @@ namespace XFPrismSample.ViewModels
         private async void OnGoToViewBTapped()
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnGoToViewBTapped)}");
-            await MyNavSvc.NavigateAsync(nameof(PageB));
+            var navResult = await _navigationService.NavigateAsync(nameof(PageB));
+            if(navResult.Success == false)
+            {
+                Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnGoToViewBTapped)}: FAILED NAVIGATION: {navResult.Exception}");
+            }
         }
     }
 }
