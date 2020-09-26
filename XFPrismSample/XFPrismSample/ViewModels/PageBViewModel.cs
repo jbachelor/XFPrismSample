@@ -20,29 +20,29 @@ namespace XFPrismSample.ViewModels
         private async void GoToViewC()
         {
             string navString = nameof(PageC);
-            var initialUri = _navigationService.GetNavigationUriPath();
+            var initialUri = NavigationService.GetNavigationUriPath();
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewC)}: Navigating string=[{navString}]");
-            var navResult = await _navigationService.NavigateAsync(navString);
+            var navResult = await NavigationService.NavigateAsync(navString);
             if (navResult.Success == false)
             {
                 Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewC)}: FAILED NAVIGATION: {navResult.Exception}");
             }
-            var finalUri = _navigationService.GetNavigationUriPath();
+            var finalUri = NavigationService.GetNavigationUriPath();
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewC)}\n\tBeforeNav: {initialUri}\n\tAfter nav: {finalUri}");
         }
 
         private async void GoToViewCAndRemoveSelfFromNavStackAsync()
         {
-            string initialUri = _navigationService.GetNavigationUriPath();
+            string initialUri = NavigationService.GetNavigationUriPath();
 
             string navString = $"../{nameof(PageC)}";
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}: Navigating string=[{navString}]\n\tInitial uri stack: {initialUri}");
-            var navResult = await _navigationService.NavigateAsync(navString);
+            var navResult = await NavigationService.NavigateAsync(navString);
             if (navResult.Success == false)
             {
                 Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}: FAILED NAVIGATION: {navResult.Exception}");
             }
-            string finalUri = _navigationService.GetNavigationUriPath();
+            string finalUri = NavigationService.GetNavigationUriPath();
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}\n\tFinal uri stack: {finalUri}");
         }
     }

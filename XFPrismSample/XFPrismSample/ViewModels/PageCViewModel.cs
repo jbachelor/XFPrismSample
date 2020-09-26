@@ -13,7 +13,7 @@ namespace XFPrismSample.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatedTo)} NavUri: {_navigationService.GetNavigationUriPath()}");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatedTo)} NavUri: {NavigationService.GetNavigationUriPath()}");
         }
     }
 }
