@@ -52,6 +52,7 @@ namespace XFPrismSample.ViewModels
         private async void HandleConfirmNavigationDialogResult(IDialogResult dialogResult)
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(HandleConfirmNavigationDialogResult)}");
+            // await Task.Delay(3000);  // un-comment this line to avoid navigation error.
             await DoNavToViewCAndRemoveSelf();
         }
 
@@ -63,6 +64,7 @@ namespace XFPrismSample.ViewModels
             string navString = $"../{nameof(PageC)}";
             Debug.WriteLine(
                 $"**** {this.GetType().Name}.{nameof(GoToViewCAndRemoveSelfFromNavStackAsync)}: Navigating string=[{navString}]\n\tInitial uri stack: {initialUri}");
+
             var navResult = await NavigationService.NavigateAsync(navString);
             if (navResult.Success == false)
             {
